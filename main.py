@@ -2,8 +2,7 @@ import numpy as np
 
 def read_instance(filepath):
     with open(filepath, 'r') as f:
-        lines = [line.strip() for line in f if line.strip() and not line.startswith('#')]
-
+        lines = [line.strip() for line in f if line.strip()]
     n = int(lines[0])
     dist = np.zeros((n, n), dtype=int)
     for i in range(n):
@@ -24,7 +23,7 @@ def greedy_tsp_with_tw_traveltime(dist, time_windows):
         best_node = None
         best_arrival = float('inf')
 
-        for next_node in range(1, n):  # ignora o depósito como destino
+        for next_node in range(1, n):
             if visited[next_node]:
                 continue
 
@@ -53,8 +52,9 @@ def greedy_tsp_with_tw_traveltime(dist, time_windows):
 
     return path, total_travel_time
 
-filename = 'n100w160.005.txt'
-dist, tw = read_instance(filename)
-path, cost = greedy_tsp_with_tw_traveltime(dist, tw)
-print("Custo (travel time):", cost)
-print("Permutação:", path)
+if __name__ == '__main__':
+    filename = 'n100w160.005.txt'
+    dist, tw = read_instance(filename)
+    path, cost = greedy_tsp_with_tw_traveltime(dist, tw)
+    print("Custo (travel time):", cost)
+    print("Permutação:", path)
