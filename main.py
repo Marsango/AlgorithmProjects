@@ -1,3 +1,5 @@
+import os
+import csv
 import numpy as np
 
 def read_instance(filepath):
@@ -49,12 +51,22 @@ def greedy_tsp_with_tw_traveltime(dist, time_windows):
         path.append(best_node)
         total_travel_time += best_travel_time
         time = best_arrival
-
     return path, total_travel_time
 
 if __name__ == '__main__':
-    filename = 'n100w160.005.txt'
-    dist, tw = read_instance(filename)
-    path, cost = greedy_tsp_with_tw_traveltime(dist, tw)
-    print("Custo (travel time):", cost)
-    print("Permutação:", path)
+    from twoopt import two_opt_with_tw
+    folder = 'instances'
+    results = []
+    for filename in os.listdir(folder):
+        filepath = os.path.join(folder, filename)
+        if os.path.isfile(filepath):
+
+            dist, tw = read_instance(filepath)
+            path_greedy, cost_greedy = greedy_tsp_with_tw_traveltime(dist, tw)
+            path_2opt, cost_2opt = two_opt_with_tw(dist, tw, path_greedy)
+            results.append((filename, cost_greedy, cost_2opt))
+
+    with open('results.csv', 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['file', 'cost_greedy', 'cost_2opt'])
+        writer.writerows(results)

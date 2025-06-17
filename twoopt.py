@@ -39,7 +39,7 @@ def two_opt_with_tw(dist, time_windows, initial_path):
 
 
 if __name__ == '__main__':
-    filename = 'n100w160.005.txt'
+    filename = 'instances/n100w160.005.txt'
     dist, tw = read_instance(filename)
     path, cost = greedy_tsp_with_tw_traveltime(dist, tw)
     improved_path, improved_cost = two_opt_with_tw(dist, tw, path)
